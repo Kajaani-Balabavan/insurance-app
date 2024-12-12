@@ -1,1 +1,188 @@
-# insurance-app
+Here’s the revised workflow and updated `README.md` to include the `sex` column in the dataset, use `conda` to create the virtual environment, and ensure the installation of `pycaret`, `fastapi`, and `ipykernel`.
+
+---
+
+## Updated Steps for Setup
+
+### 1. Create a Conda Environment
+
+1. Open your terminal or Anaconda Prompt.
+2. Create a new conda environment with Python 3.9:
+   ```bash
+   conda create --name pycaret_env python=3.9 -y
+   ```
+3. Activate the environment:
+   ```bash
+   conda activate pycaret_env
+   ```
+4. Install the required libraries:
+   ```bash
+   pip install pycaret fastapi uvicorn ipykernel
+   ```
+
+---
+
+### 2. Code Updates for the `sex` Column
+
+Ensure the code explicitly adds the `sex` column. Here's the modified `app.py`:
+
+```python
+from pycaret.datasets import get_data
+from pycaret.regression import setup, compare_models, create_api
+
+# Load and modify dataset
+data = get_data("insurance")
+data["sex"] = ["male" if i % 2 == 0 else "female" for i in range(len(data))]  # Adding a 'sex' column
+
+# Setup PyCaret regression environment
+s = setup(data, target='charges')
+
+# Compare models and select the best one
+best = compare_models()
+
+# Create an API for the best model
+create_api(best, 'insurance_prediction_model')
+
+# Run the API using FastAPI
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("insurance_prediction_model:app", host="0.0.0.0", port=8000, reload=True)
+```
+
+---
+
+### 3. Updated `README.md`
+
+Here’s the `README.md` file for your project:
+
+---
+
+````markdown
+# Insurance Charges Prediction Model
+
+This repository contains a machine learning pipeline built with [PyCaret](https://pycaret.org/) and deployed using [FastAPI](https://fastapi.tiangolo.com/). The project predicts insurance charges based on customer data, including a new `sex` column, and provides a REST API for real-time predictions.
+
+---
+
+## 📂 Project Structure
+
+- `insurance_prediction_model.ipynb`: Jupyter Notebook for creating and training the machine learning model using PyCaret.
+- `insurance_prediction_model.py`: Python script for setting up the FastAPI server.
+- `insurance_prediction_model.pkl`: Serialized machine learning model saved using PyCaret.
+- `README.md`: Documentation for the project.
+- `requirements.txt`: File listing the project dependencies.
+- `.gitignore`: Specifies files and directories to be ignored by Git.
+- `LICENSE`: License file for the project.
+
+---
+
+## 📊 Dataset
+
+The dataset used is the `insurance` dataset available in PyCaret's built-in dataset library. It contains customer information such as:
+
+- `age`: Age of the individual.
+- `sex`: Gender of the individual (`male` or `female`).
+- `bmi`: Body Mass Index.
+- `children`: Number of children covered by health insurance.
+- `smoker`: Smoking status (`yes` or `no`).
+- `region`: Residential region of the individual.
+- `charges`: Medical charges billed by the insurance company (target variable).
+
+---
+
+## 🔧 Setup and Installation
+
+### Prerequisites
+
+1. Conda installed on your system.
+2. Python 3.9 or later.
+
+### Installation Steps
+
+1. Clone this repository:
+   ```bash
+   git clone hhttps://github.com/Kajaani-Balabavan/insurance-app.git
+   cd insurance-prediction
+   ```
+````
+
+2. Create and activate a Conda environment:
+
+   ```bash
+   conda create --name pycaret_env python=3.9 -y
+   conda activate pycaret_env
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Run the script to create the prediction model and start the FastAPI server:
+   ```bash
+   python insurance_prediction_model.py
+   ```
+
+---
+
+## 🚀 How to Use
+
+1. Start the FastAPI server by running `insurance_prediction_model.py`:
+
+   ```bash
+   python insurance_prediction_model.py
+   ```
+
+2. Open the interactive API documentation at `http://127.0.0.1:8000/docs`.
+
+3. Use the `/predict` endpoint to make predictions.
+
+### Example Request:
+
+POST request to the `/predict` endpoint with JSON data:
+
+```json
+{
+  "age": 30,
+  "sex": "male",
+  "bmi": 28.5,
+  "children": 1,
+  "smoker": "no",
+  "region": "southeast"
+}
+```
+
+### Example Response:
+
+```json
+{
+  "prediction": 11234.75
+}
+```
+
+---
+
+## 🛠 Model Details
+
+The model is built using PyCaret's regression module. The following steps are implemented:
+
+1. Data preprocessing.
+2. Automated model selection and evaluation using `compare_models()`.
+3. The best model is serialized as `insurance_prediction_model.pkl`.
+4. The model is deployed using FastAPI.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. See `LICENSE` for details.
+
+---
+
+## 🙌 Acknowledgments
+
+- Thanks to the [PyCaret Team](https://pycaret.org/) for their amazing library.
+- The `insurance` dataset used is publicly available and built into PyCaret.
+
+---
