@@ -1,5 +1,4 @@
 # Insurance Charges Prediction Model
-
 This repository contains a machine learning pipeline built with [PyCaret](https://pycaret.org/) and deployed using [FastAPI](https://fastapi.tiangolo.com/). The project predicts insurance charges based on customer data, including a new `sex` column, and provides a REST API for real-time predictions.
 
 ---
@@ -123,6 +122,3 @@ This project is licensed under the MIT License. See `LICENSE` for details.
 
 - Thanks to the [PyCaret Team](https://pycaret.org/) for their amazing library.
 - The `insurance` dataset used is publicly available and built into PyCaret.
-
----
-````
