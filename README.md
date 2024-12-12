@@ -41,11 +41,9 @@ The dataset used is the `insurance` dataset available in PyCaret's built-in data
 
 1. Clone this repository:
    ```bash
-   git clone hhttps://github.com/Kajaani-Balabavan/insurance-app.git
+   git clone https://github.com/Kajaani-Balabavan/insurance-app.git
    cd insurance-prediction
    ```
-
-````
 
 2. Create and activate a Conda environment:
 
